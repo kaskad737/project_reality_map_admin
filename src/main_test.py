@@ -15,6 +15,7 @@ def onGameStatusChanged(status):
     if status == bf2.GameStatus.Playing:
         # registering chatMessage handler
         host.registerHandler('ChatMessage', onChatMessage, 1)
+        host.registerHandler('PlayerKilled', onPlayerKilled)
 
         debugMessage('===== FINISHED CUSTOM SCRIPT INIT =====')
 
@@ -57,3 +58,23 @@ def debugIngame(msg):
         host.rcon_invoke('game.sayAll "%s"' % (str(msg)))
     except:
         host.rcon_invoke('echo "debugIngame(FAIL): %s"' % (str(msg)))
+
+
+# When a player gets killed, check if he needs to teamswitch
+def onPlayerKilled(p, attacker, weapon, assists, obj):
+    p.die = 0
+    p.killreason = ""
+    debugIngame('TEST MESSAGE PLAYER KILLED')
+    if hasattr(p, "teamswitch") and p.teamswitch:
+        teamSwitchPlayer(p)
+        p.teamswitch = False
+
+
+def teamSwitchPlayer(p):
+    # globalMessage( "Teamswitching player %s" % p.getName( ) )
+    if hasattr(p, "teamswitch") and p.teamswitch:
+        p.teamswitch = False
+    if p.getTeam() == 1:
+        p.setTeam(2)
+    else:
+        p.setTeam(1)
