@@ -1,6 +1,23 @@
 import host
 import bf2
 
+def init():
+    host.registerGameStatusHandler(onGameStatusChanged)
+
+def deinit():
+    host.unregisterGameStatusHandler(onGameStatusChanged)
+
+# ------------------------------------------------------------------------
+# onGameStatusChanged
+# ------------------------------------------------------------------------
+def onGameStatusChanged(status):
+
+    if status == bf2.GameStatus.Playing:
+        # registering chatMessage handler
+        host.registerHandler('ChatMessage', onChatMessage, 1)
+
+        debugMessage('===== FINISHED CUSTOM SCRIPT INIT =====')
+
 def onChatMessage(playerId, text, channel, flags):
 
     # fix for local non-dedicated servers
@@ -10,7 +27,7 @@ def onChatMessage(playerId, text, channel, flags):
     # getting player object by player index
     player = bf2.playerManager.getPlayerByIndex(playerId)
 
-    # standart check for invalid players
+    # standart check for invalid players    
     if player is None or player.isValid() is False:
         return
 
@@ -26,35 +43,14 @@ def onChatMessage(playerId, text, channel, flags):
     # splitting filtered message text to arguments
     args = text.split(' ')
 
-    if args[0] == C.COMMANDKEY:
-        del args[0]
-        if len(args) == 0:
-            debugMessage('NO ARGS IN CHAT MSG')
-            return
-        commandHandler(player, args)
-    else:
-        pass
+    if args[0] == '!test':
+        debugMessage("TEST MESSAGE TEST MESSAGE NEW SCRIPT")
+        debugIngame("TEST MESSAGE TEST MESSAGE NEW SCRIPT TO CHAT")     
 
 
-# ------------------------------------------------------------------------
-# commandHandler
-# wrapper around function calls
-# ------------------------------------------------------------------------
-def commandHandler(player, args):
-    """
-        commandHandler
-            handling functions calls for ingame debug
-    """
-
-    if args[0] == C.KEYWORD_RELOAD:
-        reload(C)  # reloading constant file
-        return G_TWEAKER.setupDefaultTweaks()
-
-
-# Debug
 def debugMessage(msg):
     host.rcon_invoke('echo "%s"' % (str(msg)))
-
+ 
 def debugIngame(msg):
     #debugMessage(msg)
     try:
