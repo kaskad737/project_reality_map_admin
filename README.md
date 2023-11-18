@@ -97,6 +97,7 @@ def onChatMessage(playerId, text, channel, flags):
 ```
 
 Useful links:
+
 <https://web.archive.org/web/20070301124121/http://bf2tech.org/index.php/Learning_Python>
 <https://web.archive.org/web/20061201183739/http://www.bf2tech.org/index.php/Big_Picture>
 <https://web.archive.org/web/20070224121315/http://bf2tech.org/index.php/Event_Reference>
