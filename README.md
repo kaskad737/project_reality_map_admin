@@ -2,8 +2,8 @@
 
 About Project Reality: <https://www.realitymod.com/about>
 
-Python versions:
-BF2: 2.3.4
+Python versions:\
+BF2: 2.3.4\
 Project Reality: 2.7
 
 We will use: 2.7
