@@ -1,15 +1,29 @@
-# project_reality_scripts
+# project_reality_map_admin
 
-Версии питона
-в бф2 2.3.4
-в пр 2.7
+About Project Reality: <https://www.realitymod.com/about>
 
-Мы будем использовать 2.7
+Python versions:
+BF2: 2.3.4
+Project Reality: 2.7
 
-1. Как комуницировать
-2. Как запускать свой питон код в пре
-1. Создать папку, назвать как хочу, создать внутри пустой __init__.py для того чтобы сделать модуль, который можно будет использовать в последующем в игре.
-2.
+We will use: 2.7
+
+To use/test your custom scripts in Project Reality
+
+## Model review
+
+![model schema](./img/project_reality_model_schema.jpg "Model Schema")
+
+### Map change Pattern
+
+1. Tickets < 100
+2. Make vote
+3. choose maps
+4. set map
+
+## How to add you own module
+
+Create a folder (in ```Project Reality BF2\mods\pr\python\game\our_module```), name it whatever you want, create an empty __init__.py inside to make a module that can be used later in the game, and then in ```Project Reality BF2\mods\pr\python\game\__init__.py``` add the following:
 
 ```python
  # ------------------------------------------------------------------
@@ -25,22 +39,21 @@
  # ------------------------------------------------------------------
  # Add your custom script's initilization below
  
+ '''
+ HERE !!!
+ '''
  import my_module_name
 ```
 
- ПО ПУТИ - C:\Project Reality\Project Reality BF2\mods\pr\python\game
+In empty __init__.py (```Project Reality BF2\mods\pr\python\game\our_module\__init__.py```) add the following:
 
- !test_command - команда которая будет запускать модуль
- !admins
+```python
+import my_module_name
+# initiate it to work
+my_module_name.init()
+```
 
-Map change Pattern
-
-1. Tickets < 100
-2. Make vote
-3. choose maps
-4. set map
-
-Useful links:
+## Useful links
 
 <https://web.archive.org/web/20070301124121/http://bf2tech.org/index.php/Learning_Python>
 <https://web.archive.org/web/20061201183739/http://www.bf2tech.org/index.php/Big_Picture>
@@ -48,6 +61,7 @@ Useful links:
 <https://web.archive.org/web/20070612145128/http://bf2tech.org/index.php/Object_Reference#Event_Handler_Methods>
 <https://www.realitymod.com/forum/showthread.php?t=109751>
 
-Брать пример с модуля prinfo импортировать модули разрабов но их не постить, но как модули их использовать можно !!!!
+## Notes
 
-Запускать свою функцию с помощью таймера чтобы она исполнилась в следующем тике
+1. Take an example from the prinfo module import developer modules but do not post them, but you can use them as modules !!!!
+2. Start your function with a timer to execute it in the next tick
