@@ -1,9 +1,7 @@
 import host
 import bf2
 import random
-from game.realityadmin import setNextMap
 from game.realitymaplist import MAPLISTALL
-import game.realitycore as rcore
 
 
 
