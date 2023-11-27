@@ -1,7 +1,9 @@
 import host
 import bf2
 import random
+from game.realityadmin import setNextMap
 from game.realitymaplist import MAPLISTALL
+import game.realitycore as rcore
 
 
 
@@ -138,6 +140,8 @@ def onChatMessage(playerId, text, channel, flags):
     args = text.split(' ')
     if args[0] == '!test':
         bf2.gameLogic.setTickets(1, 99)
+    if args[0] == '!ptest':
+        get_players_count()
 
 # When a player gets killed, check if he needs to teamswitch
 def onPlayerKilled(p, attacker, weapon, assists, obj):
@@ -151,9 +155,10 @@ def onPlayerKilled(p, attacker, weapon, assists, obj):
     if (first_team_tickets < 100) and (not is_map_set):
         debugMessage('ONE TEAM HAVE LESS THEN 100 TICKETS, SETTING NEW MAP')
         is_map_set = True
-        mapStatisticsCounter()
+        total_players_on_server_count = get_players_count()
+        mapStatisticsCounter(actual_total_players=total_players_on_server_count)
 
-def mapStatisticsCounter():
+def mapStatisticsCounter(actual_total_players):
     # map_name = bf2.gameLogic.getMapName()
     # map_state = bf2.serverSettings.getGameMode()
     maps_statistics_new = sorted(maps_statistics.items(), key=lambda x: x[1])
@@ -170,7 +175,13 @@ def mapStatisticsCounter():
     # gpm_insurgency
     # gpm_cq
     # gpm_skirmish
-    possible_map_configurations_sorted = [map for map in possible_map_configurations if map[1] in ('gpm_insurgency', 'gpm_cq', 'gpm_skirmish')]
+    if actual_total_players < 30:
+        while True:
+            possible_map_configurations_sorted = [map for map in possible_map_configurations if map[1] in ('gpm_skirmish')]
+            if possible_map_configurations_sorted:
+                break
+    else:
+        possible_map_configurations_sorted = [map for map in possible_map_configurations if map[1] in ('gpm_insurgency', 'gpm_cq')]
 
     choose_possible = random.choice(possible_map_configurations_sorted)
     choose_mapname, choose_mode, choose_map_mode  = choose_possible
@@ -197,3 +208,9 @@ def mapStatisticsCounter():
             debugMessage('SET SUCCES')
             host.rcon_invoke("admin.nextLevel %i" % mapid)
             break
+
+def get_players_count():
+    team_one_players_count = bf2.playerManager.getNumberOfPlayersInTeam(1)
+    team_two_players_count = bf2.playerManager.getNumberOfPlayersInTeam(2)
+    total_players_count = int(team_one_players_count) + int(team_two_players_count)
+    return total_players_count
