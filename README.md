@@ -63,5 +63,4 @@ my_module_name.init()
 
 ## Notes
 
-1. Take an example from the prinfo module import developer modules but do not post them, but you can use them as modules !!!!
-2. Start your function with a timer to execute it in the next tick
+Start function with a timer to execute it in the next tick for better optimization
