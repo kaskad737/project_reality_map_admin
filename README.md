@@ -55,10 +55,10 @@ my_module_name.init()
 
 ## Useful links
 
-<https://web.archive.org/web/20070301124121/http://bf2tech.org/index.php/Learning_Python>
-<https://web.archive.org/web/20061201183739/http://www.bf2tech.org/index.php/Big_Picture>
-<https://web.archive.org/web/20070224121315/http://bf2tech.org/index.php/Event_Reference>
-<https://web.archive.org/web/20070612145128/http://bf2tech.org/index.php/Object_Reference#Event_Handler_Methods>
+<https://web.archive.org/web/20070301124121/http://bf2tech.org/index.php/Learning_Python>\
+<https://web.archive.org/web/20061201183739/http://www.bf2tech.org/index.php/Big_Picture>\
+<https://web.archive.org/web/20070224121315/http://bf2tech.org/index.php/Event_Reference>\
+<https://web.archive.org/web/20070612145128/http://bf2tech.org/index.php/Object_Reference#Event_Handler_Methods>\
 <https://www.realitymod.com/forum/showthread.php?t=109751>
 
 ## Notes
