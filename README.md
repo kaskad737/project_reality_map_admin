@@ -8,7 +8,8 @@ Project Reality: 2.7
 
 We will use: 2.7
 
-To use/test your custom scripts in Project Reality
+For the big picture of how things work, use the:\
+<https://web.archive.org/web/20061201183739/http://www.bf2tech.org/index.php/Big_Picture>\
 
 ## Model review
 
@@ -22,6 +23,8 @@ To use/test your custom scripts in Project Reality
 4. set map
 
 ## How to add you own module
+
+To use/test your custom scripts in Project Reality:
 
 Create a folder (in ```Project Reality BF2\mods\pr\python\game\our_module```), name it whatever you want, create an empty __init__.py inside to make a module that can be used later in the game, and then in ```Project Reality BF2\mods\pr\python\game\__init__.py``` add the following:
 
