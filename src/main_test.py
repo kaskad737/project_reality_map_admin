@@ -148,16 +148,17 @@ def onChatMessage(playerId, text, channel, flags):
 def onPlayerKilled(p, attacker, weapon, assists, obj):
     global is_map_set
     debugMessage('TEST MESSAGE PLAYER KILLED')
-    # Get tickets for each team
-    first_team_tickets = int(bf2.gameLogic.getTickets(1))
-    second_team_tickets = int(bf2.gameLogic.getTickets(2))
-    debugMessage(str(first_team_tickets))
-    debugMessage(str(second_team_tickets))
-    if ((first_team_tickets < tickets_limit_big_maps) or (second_team_tickets < tickets_limit_big_maps)) and (not is_map_set):
-        debugMessage('ONE TEAM HAVE LESS THEN 100 TICKETS, SETTING NEW MAP')
-        is_map_set = True
-        total_players_on_server_count = get_players_count()
-        mapStatisticsCounter(actual_total_players=total_players_on_server_count)
+    if not is_map_set:
+        # Get tickets for each team
+        first_team_tickets = int(bf2.gameLogic.getTickets(1))
+        second_team_tickets = int(bf2.gameLogic.getTickets(2))
+        debugMessage(str(first_team_tickets))
+        debugMessage(str(second_team_tickets))
+        if ((first_team_tickets < tickets_limit_big_maps) or (second_team_tickets < tickets_limit_big_maps)):
+            debugMessage('ONE TEAM HAVE LESS THEN 100 TICKETS, SETTING NEW MAP')
+            is_map_set = True
+            total_players_on_server_count = get_players_count()
+            mapStatisticsCounter(actual_total_players=total_players_on_server_count)
 
 def mapStatisticsCounter(actual_total_players):
     # map_name = bf2.gameLogic.getMapName()
