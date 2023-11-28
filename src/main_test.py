@@ -1,13 +1,9 @@
 import host
 import bf2
 import random
-import configparser
 from game.realitymaplist import MAPLISTALL
+from config import config
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-tickets_limit_big_maps = int(config['SCRIPT_VARIABLES']['tickets_limit_big_maps'])
-players_limit_for_skirmish = int(config['SCRIPT_VARIABLES']['players_limit_for_skirmish'])
 
 def init():
     host.registerGameStatusHandler(onGameStatusChanged)
@@ -27,6 +23,11 @@ def debugIngame(msg):
 def onGameStatusChanged(status):
 
     if status == bf2.GameStatus.Playing:
+        global tickets_limit_big_maps
+        global players_limit_for_skirmish
+
+        tickets_limit_big_maps = int(config['tickets_limit_big_maps'])
+        players_limit_for_skirmish = int(config['players_limit_for_skirmish'])
 
         global server_maplist
         server_maplist = host.rcon_invoke("maplist.list")
