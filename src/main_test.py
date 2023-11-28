@@ -1,10 +1,13 @@
 import host
 import bf2
 import random
+import configparser
 from game.realitymaplist import MAPLISTALL
 
-
-
+config = configparser.ConfigParser()
+config.read('config.ini')
+tickets_limit_big_maps = int(config['SCRIPT_VARIABLES']['tickets_limit_big_maps'])
+players_limit_for_skirmish = int(config['SCRIPT_VARIABLES']['players_limit_for_skirmish'])
 
 def init():
     host.registerGameStatusHandler(onGameStatusChanged)
@@ -21,9 +24,6 @@ def debugIngame(msg):
     except:
         host.rcon_invoke('echo "debugIngame(FAIL): %s"' % (str(msg)))
 
-# ------------------------------------------------------------------------
-# onGameStatusChanged
-# ------------------------------------------------------------------------
 def onGameStatusChanged(status):
 
     if status == bf2.GameStatus.Playing:
@@ -137,20 +137,22 @@ def onChatMessage(playerId, text, channel, flags):
 
     args = text.split(' ')
     if args[0] == '!test':
+        # for test map change logic
         bf2.gameLogic.setTickets(1, 99)
-    if args[0] == '!ptest':
-        get_players_count()
+    if args[0] == '!test2':
+        # for test map change logic (skirmish)
+        bf2.gameLogic.setTickets(1, 45)
 
 # When a player gets killed, check if he needs to teamswitch
 def onPlayerKilled(p, attacker, weapon, assists, obj):
     global is_map_set
-    debugIngame('TEST MESSAGE PLAYER KILLED')
+    debugMessage('TEST MESSAGE PLAYER KILLED')
     # Get tickets for each team
     first_team_tickets = int(bf2.gameLogic.getTickets(1))
     second_team_tickets = int(bf2.gameLogic.getTickets(2))
-    debugIngame(str(first_team_tickets))
-    debugIngame(str(second_team_tickets))
-    if (first_team_tickets < 100) and (not is_map_set):
+    debugMessage(str(first_team_tickets))
+    debugMessage(str(second_team_tickets))
+    if ((first_team_tickets < tickets_limit_big_maps) or (second_team_tickets < tickets_limit_big_maps)) and (not is_map_set):
         debugMessage('ONE TEAM HAVE LESS THEN 100 TICKETS, SETTING NEW MAP')
         is_map_set = True
         total_players_on_server_count = get_players_count()
@@ -160,11 +162,16 @@ def mapStatisticsCounter(actual_total_players):
     # map_name = bf2.gameLogic.getMapName()
     # map_state = bf2.serverSettings.getGameMode()
     maps_statistics_new = sorted(maps_statistics.items(), key=lambda x: x[1])
+    # take five less playes maps (w.i.p.)
     five_least_frequently_played = maps_statistics_new[:5]
+    # random choose three maps from these five
     random_choise_of_three_maps = random.sample(five_least_frequently_played, 3)
+    # random choose one map from these three
     random_choise = random.choice(random_choise_of_three_maps)
+    # take only map name
     next_map_name = random_choise[0]
 
+    # search for all kinds of modes for our map
     possible_map_configurations = []
     for element in MAPLISTALL:
         if element[0] == next_map_name:
@@ -173,11 +180,15 @@ def mapStatisticsCounter(actual_total_players):
     # gpm_insurgency
     # gpm_cq
     # gpm_skirmish
-    if actual_total_players < 30:
+    # here we filter the game modes for the map
+    # we search for skirmish mode in map modes
+    if actual_total_players < players_limit_for_skirmish:
         while True:
             possible_map_configurations_sorted = [map for map in possible_map_configurations if map[1] in ('gpm_skirmish')]
             if possible_map_configurations_sorted:
                 break
+    # or, in case of "big" map, we take only insurgency and aas mode's
+    # TODO: need add logic to choose ins or aas 
     else:
         possible_map_configurations_sorted = [map for map in possible_map_configurations if map[1] in ('gpm_insurgency', 'gpm_cq')]
 
