@@ -34,8 +34,8 @@ def onGameStatusChanged(status):
         global is_map_set
         is_map_set = False
 
-        global maps_statistics
-        maps_statistics = {
+        global mock_maps_statistics
+        mock_maps_statistics = {
             "route": 12,
             "vadso_city": 16,
             "ulyanovsk": 8,
@@ -161,7 +161,7 @@ def onPlayerKilled(p, attacker, weapon, assists, obj):
 def mapStatisticsCounter(actual_total_players):
     # map_name = bf2.gameLogic.getMapName()
     # map_state = bf2.serverSettings.getGameMode()
-    maps_statistics_new = sorted(maps_statistics.items(), key=lambda x: x[1])
+    maps_statistics_new = sorted(mock_maps_statistics.items(), key=lambda x: x[1])
     # take five less playes maps (w.i.p.)
     five_least_frequently_played = maps_statistics_new[:5]
     # random choose three maps from these five
