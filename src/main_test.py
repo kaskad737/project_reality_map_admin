@@ -161,6 +161,9 @@ def onPlayerKilled(p, attacker, weapon, assists, obj):
             mapStatisticsCounter(actual_total_players=total_players_on_server_count)
 
 def mapStatisticsCounter(actual_total_players):
+    '''
+    Map choose logic (Work in progress)
+    '''
     # map_name = bf2.gameLogic.getMapName()
     # map_state = bf2.serverSettings.getGameMode()
     maps_statistics_new = sorted(mock_maps_statistics.items(), key=lambda x: x[1])
