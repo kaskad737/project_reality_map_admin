@@ -185,10 +185,8 @@ def mapStatisticsCounter(actual_total_players):
     # here we filter the game modes for the map
     # we search for skirmish mode in map modes
     if actual_total_players < players_limit_for_skirmish:
-        while True:
-            possible_map_configurations_sorted = [map for map in possible_map_configurations if map[1] in ('gpm_skirmish')]
-            if possible_map_configurations_sorted:
-                break
+        if 'gpm_skirmish' in possible_map_configurations[0][1]:
+            possible_map_configurations_sorted = possible_map_configurations
     # or, in case of "big" map, we take only insurgency and aas mode's
     # TODO: need add logic to choose ins or aas 
     else:
